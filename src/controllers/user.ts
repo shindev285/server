@@ -8,8 +8,6 @@ const register = async (req: any, res: any) => {
   const body = req.body;
   const { name, email, password } = body;
 
-  
-
   try {
     // email phải là duu nhất
     const user = await UserModel.findOne({ email });
@@ -24,10 +22,11 @@ const register = async (req: any, res: any) => {
     await newUser.save();
     // //  Xóa password
     // delete  newUser.password;
-    delete newUser.password;
+    delete newUser._doc.password;
+
     // Trả về phản hồi thành công với mã trạng thái 200
     res.status(200).json({
-      message: "User created successfully ,register",
+      message: "User created successfully, register",
       data: {
         ...newUser._doc,
         token: await getAccessToken({
