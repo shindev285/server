@@ -42,6 +42,32 @@ const register = async (req: any, res: any) => {
 		});
   }
 };
+const loginWithGoogle = async (req: any, res: any) => {
+  const body = req.body;
+  const { name, email} = body;
+  try {
+    const user: any = await UserModel.findOne({ email });
+    if (user) {
+      
+    }
+
+    res.status(200).json({
+      message: "User created successfully, register",
+      data: {
+        ...user._doc,
+        token: await getAccessToken({
+          _id: user._id,
+          email: user.email,
+          rule: 1,
+        }),
+      }
+    });
+  } catch (error: any) {
+    res.status(404).json({
+			message: error.message,
+		});
+  }
+};
 const login = async (req: any, res: any) => {
   const body = req.body;
   const {  email, password } = body;
